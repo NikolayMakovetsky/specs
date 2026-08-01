@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0rpnbau" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.49.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
+  <bpmn:collaboration id="Collaboration_0m1mp40">
+    <bpmn:participant id="Participant_09tajte" name="Согласование командировки" processRef="Process_122q1w7" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_122q1w7" isExecutable="true" camunda:historyTimeToLive="30">
+    <bpmn:startEvent id="StartEvent_1" name="руководитель отдела запланировал командировку сотрудников">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="start">
+          <camunda:script scriptFormat="groovy">println "======================================"
+        println "Process started: Business trip approval"
+        println "sStart time: " + new Date().format("yyyy-MM-dd HH:mm:ss")
+        println "Process instance ID: " + execution.getProcessInstanceId()
+println "------------------------------"</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0e7r8h7</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_0fmkox7" name="заполнить форму с деталями поездки" camunda:assignee="demo">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">println "user task completed: fill travel form"</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0e7r8h7</bpmn:incoming>
+      <bpmn:outgoing>Flow_03ylu4f</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_17z025s" name="рассчитать сумму командировочных расходов" camunda:expression="${true}">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">println "service task completed: calculate the amount of travel expenses"</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_03ylu4f</bpmn:incoming>
+      <bpmn:outgoing>Flow_12c6n5b</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_02lsa6z">
+        <bpmn:targetRef>DataObjectReference_1xygcfq</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:dataObjectReference id="DataObjectReference_1xygcfq" dataObjectRef="DataObject_1lu1elx" />
+    <bpmn:dataObject id="DataObject_1lu1elx" />
+    <bpmn:sequenceFlow id="Flow_0e7r8h7" sourceRef="StartEvent_1" targetRef="Activity_0fmkox7" />
+    <bpmn:sequenceFlow id="Flow_03ylu4f" sourceRef="Activity_0fmkox7" targetRef="Activity_17z025s" />
+    <bpmn:userTask id="Activity_0638qsz" name="утвердить документ у бухгалтера" camunda:assignee="demo">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">println "user task completed: approve the document from the accountant"</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0afvfgy</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qwncjz</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0rqozjy" name="сумма расходов tripsum &#62;= 50.000">
+      <bpmn:incoming>Flow_0qwncjz</bpmn:incoming>
+      <bpmn:outgoing>Flow_038g0qp</bpmn:outgoing>
+      <bpmn:outgoing>Flow_18iy0a0</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_0n8alms" name="утвердить документ у финансового директора" camunda:assignee="demo">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">println "user task completed: approve the document from the finance director"</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_038g0qp</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ewuvy4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0wgtu8v" name="командировка согласована">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">println "------------------------------"
+        println "Process completed: Business trip approval"
+        println "End time: " + new Date().format("yyyy-MM-dd HH:mm:ss")
+        println "Process instance ID: " + execution.getProcessInstanceId()
+        println "======================================"</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ewuvy4</bpmn:incoming>
+      <bpmn:incoming>Flow_18iy0a0</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0qwncjz" sourceRef="Activity_0638qsz" targetRef="Gateway_0rqozjy" />
+    <bpmn:sequenceFlow id="Flow_038g0qp" name="да" sourceRef="Gateway_0rqozjy" targetRef="Activity_0n8alms">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${tripsum &gt;= 50000}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_18iy0a0" name="нет" sourceRef="Gateway_0rqozjy" targetRef="Event_0wgtu8v">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${tripsum &lt; 50000}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1ewuvy4" sourceRef="Activity_0n8alms" targetRef="Event_0wgtu8v" />
+    <bpmn:sequenceFlow id="Flow_12c6n5b" sourceRef="Activity_17z025s" targetRef="Activity_000sdbb" />
+    <bpmn:sequenceFlow id="Flow_0afvfgy" sourceRef="Activity_000sdbb" targetRef="Activity_0638qsz" />
+    <bpmn:scriptTask id="Activity_000sdbb" name="установить значение переменной tripsum" scriptFormat="groovy">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">def tripsum = execution.getVariable("tripsum");
+println "script task completed: set tripsum value (tripsum = " + tripsum + ")";</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_12c6n5b</bpmn:incoming>
+      <bpmn:outgoing>Flow_0afvfgy</bpmn:outgoing>
+      <bpmn:script>def tripsumValue = 60000;
+execution.setVariable("tripsum", tripsumValue);</bpmn:script>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0m1mp40">
+      <bpmndi:BPMNShape id="Participant_09tajte_di" bpmnElement="Participant_09tajte" isHorizontal="true">
+        <dc:Bounds x="160" y="50" width="1278" height="320" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="242" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="224" y="275" width="73" height="66" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0jydd64_di" bpmnElement="Activity_0fmkox7">
+        <dc:Bounds x="330" y="210" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0gddcyz_di" bpmnElement="Activity_17z025s">
+        <dc:Bounds x="490" y="210" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_1xygcfq_di" bpmnElement="DataObjectReference_1xygcfq">
+        <dc:Bounds x="582" y="115" width="36" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1xbthqa_di" bpmnElement="Activity_0638qsz">
+        <dc:Bounds x="840" y="210" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0rqozjy_di" bpmnElement="Gateway_0rqozjy" isMarkerVisible="true">
+        <dc:Bounds x="1005" y="225" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="986" y="285" width="89" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_03lzeu1_di" bpmnElement="Activity_0n8alms">
+        <dc:Bounds x="1120" y="100" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0wgtu8v_di" bpmnElement="Event_0wgtu8v">
+        <dc:Bounds x="1302" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1284" y="275" width="73" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_01qwe2g_di" bpmnElement="Activity_000sdbb">
+        <dc:Bounds x="660" y="210" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0e7r8h7_di" bpmnElement="Flow_0e7r8h7">
+        <di:waypoint x="278" y="250" />
+        <di:waypoint x="330" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03ylu4f_di" bpmnElement="Flow_03ylu4f">
+        <di:waypoint x="430" y="250" />
+        <di:waypoint x="490" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qwncjz_di" bpmnElement="Flow_0qwncjz">
+        <di:waypoint x="940" y="250" />
+        <di:waypoint x="1005" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_038g0qp_di" bpmnElement="Flow_038g0qp">
+        <di:waypoint x="1030" y="225" />
+        <di:waypoint x="1030" y="140" />
+        <di:waypoint x="1120" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1039" y="180" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_18iy0a0_di" bpmnElement="Flow_18iy0a0">
+        <di:waypoint x="1055" y="250" />
+        <di:waypoint x="1302" y="250" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1170" y="232" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ewuvy4_di" bpmnElement="Flow_1ewuvy4">
+        <di:waypoint x="1220" y="140" />
+        <di:waypoint x="1256" y="140" />
+        <di:waypoint x="1256" y="250" />
+        <di:waypoint x="1302" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12c6n5b_di" bpmnElement="Flow_12c6n5b">
+        <di:waypoint x="590" y="250" />
+        <di:waypoint x="660" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0afvfgy_di" bpmnElement="Flow_0afvfgy">
+        <di:waypoint x="760" y="250" />
+        <di:waypoint x="840" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_02lsa6z_di" bpmnElement="DataOutputAssociation_02lsa6z">
+        <di:waypoint x="562" y="210" />
+        <di:waypoint x="586" y="165" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
