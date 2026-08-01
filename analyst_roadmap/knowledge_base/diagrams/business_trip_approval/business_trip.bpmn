@@ -19,7 +19,7 @@ println "------------------------------"</camunda:script>
     <bpmn:userTask id="Activity_0fmkox7" name="заполнить форму с деталями поездки" camunda:formKey="embedded:deployment:travel-form.html" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:executionListener event="end">
-          <camunda:script scriptFormat="groovy">        println "┌─────────────────────────────────────────";
+          <camunda:script scriptFormat="groovy">println "┌─────────────────────────────────────────";
         println "│ FORM DATA RECEIVED";
         println "├─────────────────────────────────────────";
         
@@ -37,10 +37,8 @@ println "------------------------------"</camunda:script>
         
         println "└─────────────────────────────────────────";
         
-        // Сохраняем время заполнения формы
         execution.setVariable("formSubmittedAt", new Date().format("yyyy-MM-dd HH:mm:ss"));
-
-println "user task completed: fill travel form"</camunda:script>
+        println "user task completed: fill travel form";</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0e7r8h7</bpmn:incoming>
