@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Детали командировки</title>
+</head>
+<body>
+    <h3>Заполните детали поездки</h3>
+    
+    <form role="form">
+        <div class="form-group">
+            <label for="employeeName">Имя сотрудника</label>
+            <input id="employeeName" type="text" class="form-control" 
+                   cam-variable-name="employeeName" 
+                   cam-variable-type="String" 
+                   required />
+        </div>
+        
+        <div class="form-group">
+            <label for="destination">Город назначения</label>
+            <input id="destination" type="text" class="form-control" 
+                   cam-variable-name="destination" 
+                   cam-variable-type="String" 
+                   required />
+        </div>
+        
+        <div class="form-group">
+            <label for="tripDays">Количество дней</label>
+            <input id="tripDays" type="number" class="form-control" 
+                   cam-variable-name="tripDays" 
+                   cam-variable-type="Integer"
+                   min="1" 
+                   required />
+        </div>
+        
+        <div class="form-group">
+            <label for="tripsum">Сумма командировочных расходов (в рублях)</label>
+            <input id="tripsum" type="number" class="form-control" 
+                   cam-variable-name="tripsum" 
+                   cam-variable-type="Integer"
+                   min="0" 
+                   step="1000"
+                   placeholder="Например: 45000"
+                   required />
+            <small class="help-block">Введите сумму расходов. Если >= 50 000 руб., потребуется утверждение финансового директора.</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="comments">Комментарии</label>
+            <textarea id="comments" class="form-control" 
+                      cam-variable-name="comments" 
+                      cam-variable-type="String"
+                      rows="3"></textarea>
+        </div>
+    </form>
+</body>
+</html>

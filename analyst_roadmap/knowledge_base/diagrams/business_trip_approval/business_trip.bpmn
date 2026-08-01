@@ -16,10 +16,31 @@ println "------------------------------"</camunda:script>
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_0e7r8h7</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="Activity_0fmkox7" name="заполнить форму с деталями поездки" camunda:assignee="demo">
+    <bpmn:userTask id="Activity_0fmkox7" name="заполнить форму с деталями поездки" camunda:formKey="embedded:deployment:travel-form.html" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:executionListener event="end">
-          <camunda:script scriptFormat="groovy">println "user task completed: fill travel form"</camunda:script>
+          <camunda:script scriptFormat="groovy">        println "┌─────────────────────────────────────────";
+        println "│ FORM DATA RECEIVED";
+        println "├─────────────────────────────────────────";
+        
+        def employeeName = execution.getVariable("employeeName");
+        def destination = execution.getVariable("destination");
+        def tripDays = execution.getVariable("tripDays");
+        def tripsum = execution.getVariable("tripsum");
+        def comments = execution.getVariable("comments");
+        
+        println "│ Employee:    " + (employeeName ?: "Not provided");
+        println "│ Destination: " + (destination ?: "Not provided");
+        println "│ Days:        " + (tripDays ?: "Not provided");
+        println "│ Amount:      " + (tripsum ?: "Not provided") + " RUB";
+        if (comments) println "│ Comments:    " + comments;
+        
+        println "└─────────────────────────────────────────";
+        
+        // Сохраняем время заполнения формы
+        execution.setVariable("formSubmittedAt", new Date().format("yyyy-MM-dd HH:mm:ss"));
+
+println "user task completed: fill travel form"</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0e7r8h7</bpmn:incoming>
