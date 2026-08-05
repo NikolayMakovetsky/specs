@@ -40,62 +40,16 @@ println "user task completed: fill travel form";</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0e7r8h7</bpmn:incoming>
-      <bpmn:outgoing>Flow_03ylu4f</bpmn:outgoing>
+      <bpmn:outgoing>Flow_03dtqtq</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0e7r8h7" sourceRef="StartEvent_1" targetRef="Activity_0fmkox7" />
-    <bpmn:sequenceFlow id="Flow_03ylu4f" sourceRef="Activity_0fmkox7" targetRef="Activity_17z025s" />
-    <bpmn:sequenceFlow id="Flow_12c6n5b" sourceRef="Activity_17z025s" targetRef="Activity_0638qsz" />
-    <bpmn:dataObjectReference id="DataObjectReference_1xygcfq" dataObjectRef="DataObject_1lu1elx" />
-    <bpmn:dataObject id="DataObject_1lu1elx" />
-    <bpmn:serviceTask id="Activity_17z025s" name="рассчитать сумму командировочных расходов" camunda:expression="${true}">
-      <bpmn:extensionElements>
-        <camunda:executionListener event="end">
-          <camunda:script scriptFormat="groovy">// Получаем данные из формы
-def destination = execution.getVariable("destination");
-def tripDays = execution.getVariable("tripDays");
-def employeeCount = execution.getVariable("employeeCount");
-
-// Ставка 5000 руб./день/чел.
-def dailyRate = 5000;
-
-// Рассчитываем общую сумму
-def travelsum = 0;
-if (tripDays != null &amp;&amp; employeeCount != null) {
-    travelsum = tripDays * employeeCount * dailyRate;
-}
-
-// Сохраняем переменную для шлюза
-execution.setVariable("travelsum", travelsum);
-execution.setVariable("dailyRate", dailyRate);
-
-println "┌─────────────────────────────────────────";
-println "│ CALCULATING TRAVEL EXPENSES";
-println "├─────────────────────────────────────────";
-println "│ Город:           " + (destination ?: "Не указано");
-println "│ Количество дней: " + (tripDays ?: "Не указано");
-println "│ Число работников:" + (employeeCount ?: "Не указано");
-println "│ Ставка:          " + dailyRate + " руб./день/чел.";
-println "├─────────────────────────────────────────";
-println "│ ИТОГО:           " + travelsum + " RUB";
-println "│ (свыше 50 000 руб. - требуется фин.директор)";
-println "└─────────────────────────────────────────";
-
-println "service task completed: calculate the amount of travel expenses";</camunda:script>
-        </camunda:executionListener>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_03ylu4f</bpmn:incoming>
-      <bpmn:outgoing>Flow_12c6n5b</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_02lsa6z">
-        <bpmn:targetRef>DataObjectReference_1xygcfq</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
-    </bpmn:serviceTask>
     <bpmn:userTask id="Activity_0638qsz" name="утвердить документ у бухгалтера" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:executionListener event="end">
           <camunda:script scriptFormat="groovy">println "user task completed: approve the document from the accountant"</camunda:script>
         </camunda:executionListener>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_12c6n5b</bpmn:incoming>
+      <bpmn:incoming>Flow_0y0u2w3</bpmn:incoming>
       <bpmn:outgoing>Flow_0qwncjz</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:exclusiveGateway id="Gateway_0rqozjy" name="сумма расходов travelsum &#62;= 50.000">
@@ -133,11 +87,285 @@ println "service task completed: calculate the amount of travel expenses";</camu
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${travelsum &lt; 50000}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1ewuvy4" sourceRef="Activity_0n8alms" targetRef="Event_0wgtu8v" />
+    <bpmn:sequenceFlow id="Flow_03dtqtq" sourceRef="Activity_0fmkox7" targetRef="Activity_12w96kd" />
+    <bpmn:dataStoreReference id="DataStoreReference_1an0glv" />
+    <bpmn:sequenceFlow id="Flow_12lfzhn" sourceRef="Activity_17z025s" targetRef="Activity_0ii94cd" />
+    <bpmn:sequenceFlow id="Flow_0y0u2w3" sourceRef="Activity_0ii94cd" targetRef="Activity_0638qsz" />
+    <bpmn:sequenceFlow id="Flow_1v331ow" sourceRef="Activity_12w96kd" targetRef="Activity_17z025s" />
+    <bpmn:dataObjectReference id="DataObjectReference_1qeakfs" dataObjectRef="DataObject_1jn7w81" />
+    <bpmn:dataObject id="DataObject_1jn7w81" />
+    <bpmn:serviceTask id="Activity_17z025s" name="рассчитать сумму командировочных расходов" camunda:expression="${true}">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">// Получаем данные из формы
+        def destination = execution.getVariable("destination");
+        def tripDays = execution.getVariable("tripDays");
+        def employeeCount = execution.getVariable("employeeCount");
+        
+        // Получаем ставку из БД (установлена в предыдущем шаге)
+        def dailyRate = execution.getVariable("dailyRate");
+        // Если ставка не установлена, используем дефолт
+        if (dailyRate == null) {
+            dailyRate = 5000;
+            execution.setVariable("dailyRate", dailyRate);
+        }
+
+        // Рассчитываем общую сумму
+        def travelsum = 0;
+        if (tripDays != null &amp;&amp; employeeCount != null) {
+            travelsum = tripDays * employeeCount * dailyRate;
+        }
+
+        // Сохраняем переменную для шлюза
+        execution.setVariable("travelsum", travelsum);
+        execution.setVariable("dailyRate", dailyRate);
+
+        println "┌─────────────────────────────────────────";
+        println "│ CALCULATING TRAVEL EXPENSES";
+        println "├─────────────────────────────────────────";
+        println "│ Город:           " + (destination ?: "Не указано");
+        println "│ Количество дней: " + (tripDays ?: "Не указано");
+        println "│ Число работников:" + (employeeCount ?: "Не указано");
+        println "│ Ставка:          " + dailyRate + " руб./день/чел.";
+        println "├─────────────────────────────────────────";
+        println "│ ИТОГО:           " + travelsum + " RUB";
+        println "│ (свыше 50 000 руб. - требуется фин.директор)";
+        println "└─────────────────────────────────────────";
+
+        println "service task completed: calculate the amount of travel expenses";</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1v331ow</bpmn:incoming>
+      <bpmn:outgoing>Flow_12lfzhn</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_12w96kd" name="получить ставку из БД" camunda:expression="${true}">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">import java.sql.DriverManager;
+        import java.sql.Statement;
+        import java.sql.ResultSet;
+
+        println "┌─────────────────────────────────────────";
+        println "│ GETTING DAILY RATE FROM DATABASE";
+        println "├─────────────────────────────────────────";
+
+        def destination = execution.getVariable("destination");
+
+        // Настройки подключения к H2
+        def dbUrl = "jdbc:h2:~/camunda/city_rates;DB_CLOSE_DELAY=-1"
+        def dbUser = "sa"
+        def dbPassword = ""
+
+        def dailyRate = null
+
+        try {
+            // Загружаем драйвер H2
+            Class.forName("org.h2.Driver")
+
+            // Подключаемся к БД
+            def conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)
+
+            // Создаем таблицу если не существует
+            def createTableSQL = """
+                CREATE TABLE IF NOT EXISTS city_rates (
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    city_name VARCHAR(255) NOT NULL UNIQUE,
+                    daily_rate INT NOT NULL,
+                    currency VARCHAR(10) DEFAULT 'RUB'
+                )
+            """
+            def stmt = conn.createStatement()
+            stmt.execute(createTableSQL)
+            stmt.close()
+
+            // Проверяем есть ли данные
+            def checkStmt = conn.createStatement()
+            def rs = checkStmt.executeQuery("SELECT COUNT(*) as cnt FROM city_rates")
+            rs.next()
+            def count = rs.getInt("cnt")
+            checkStmt.close()
+
+            if (count == 0) {
+                // Вставляем начальные данные
+                def insertStmt = conn.prepareStatement("INSERT INTO city_rates (city_name, daily_rate) VALUES (?, ?)")
+                def cities = [
+                    ["Москва", 5500],
+                    ["Санкт-Петербург", 5000],
+                    ["Казань", 4500],
+                    ["Новосибирск", 4200],
+                    ["Екатеринбург", 4000],
+                    ["Краснодар", 3800],
+                    ["Сочи", 4500],
+                    ["Владивосток", 4800],
+                    ["Ростов-на-Дону", 3700],
+                    ["Тюмень", 4100],
+                    ["Нижний Новгород", 3900],
+                    ["Самара", 3800],
+                    ["Уфа", 3700],
+                    ["Омск", 3600],
+                    ["Челябинск", 3700],
+                    ["Красноярск", 4000],
+                    ["Пермь", 3600],
+                    ["Волгоград", 3500]
+                ]
+
+                cities.each { city, rate -&gt;
+                    insertStmt.setString(1, city)
+                    insertStmt.setInt(2, rate)
+                    insertStmt.addBatch()
+                }
+                insertStmt.executeBatch()
+                insertStmt.close()
+
+                println "│ [INIT] Inserted " + cities.size() + " cities into database";
+            }
+
+            // Получаем ставку для города
+            def rateStmt = conn.prepareStatement("SELECT daily_rate FROM city_rates WHERE city_name = ?")
+            rateStmt.setString(1, destination)
+            def rateRs = rateStmt.executeQuery()
+
+            if (rateRs.next()) {
+                dailyRate = rateRs.getInt("daily_rate")
+                println "│ Город:           " + destination;
+                println "│ Ставка:          " + dailyRate + " руб./день/чел.";
+            } else {
+                println "│ [WARNING] Ставка для города '" + destination + "' не найдена";
+                println "│ Используется ставка по умолчанию: 5000 руб.";
+                dailyRate = 5000
+            }
+
+            rateRs.close()
+            rateStmt.close()
+            conn.close()
+
+        } catch (Exception e) {
+            println "│ [ERROR] " + e.getMessage();
+            // Используем дефолтную ставку
+            dailyRate = 5000
+            println "│ Используется ставка по умолчанию: 5000 руб.";
+        }
+
+        // Сохраняем ставку
+        execution.setVariable("dailyRate", dailyRate);
+        execution.setVariable("currency", "RUB");
+
+        println "└─────────────────────────────────────────";
+        println "service task completed: get daily rate from DB";</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_03dtqtq</bpmn:incoming>
+      <bpmn:outgoing>Flow_1v331ow</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1xm15nv">
+        <bpmn:targetRef>DataStoreReference_1an0glv</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0ii94cd" name="сформировать txt-документ" camunda:expression="${true}">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="end">
+          <camunda:script scriptFormat="groovy">import java.text.SimpleDateFormat
+import java.text.DecimalFormat
+
+println "┌─────────────────────────────────────────";
+println "│ GENERATING TRAVEL DOCUMENT";
+println "├─────────────────────────────────────────";
+
+// Получаем данные
+def destination = execution.getVariable("destination");
+def tripDays = execution.getVariable("tripDays");
+def employeeCount = execution.getVariable("employeeCount");
+def dailyRate = execution.getVariable("dailyRate");
+def travelsum = execution.getVariable("travelsum");
+def date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+// Форматируем сумму с разделителями тысяч
+def decimalFormat = new DecimalFormat("#,###")
+def formattedTravelsum = travelsum != null ? decimalFormat.format(travelsum) : "Не указано"
+
+// Формируем статус согласования
+def approvalStatus = "  ✅ Требуется утверждение бухгалтера"
+if (travelsum &gt;= 50000) {
+    approvalStatus = approvalStatus + "\n  ✅ Требуется утверждение финансового директора"
+}
+
+// Создаем контент документа (без ID процесса)
+def documentContent = """
+========================================================
+              СЛУЖЕБНАЯ ЗАПИСКА
+              о служебной командировке
+========================================================
+
+Город назначения:          ${destination ?: "Не указано"}
+Количество дней:           ${tripDays ?: "Не указано"}
+Количество работников:     ${employeeCount ?: "Не указано"}
+Ставка (руб./день/чел.):   ${dailyRate ?: "Не указано"}
+
+--------------------------------------------------------
+ИТОГО:                     ${formattedTravelsum} RUB
+--------------------------------------------------------
+
+Статус согласования:
+${approvalStatus}
+
+========================================================
+СОГЛАСОВАНО:
+
+Бухгалтер:                   ___________________
+                             (Иванова М.А.)
+${travelsum &gt;= 50000 ? '''
+
+Финансовый директор:          ___________________
+                             (Сидоров В.П.)
+''' : ''}
+========================================================
+Дата создания документа: ${date}
+========================================================
+""".trim()
+
+// Формируем имя файла
+def dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")
+def timestamp = dateFormat.format(new Date())
+def cleanCity = destination ? destination.replaceAll("[^a-zA-Zа-яА-Я]", "_") : "unknown"
+def fileName = "travel_document_" + timestamp + "_" + cleanCity + ".txt"
+
+// Путь к папке проекта
+def projectDir = "D:/Projects/specs/business_trip"
+def docsDir = projectDir + "/documents"
+def filePath = docsDir + "/" + fileName
+
+// Создаем папку если не существует
+def dir = new File(docsDir)
+if (!dir.exists()) {
+    dir.mkdirs()
+    println "│ [INFO] Создана папка: " + docsDir;
+}
+
+// Сохраняем файл
+def file = new File(filePath)
+file.text = documentContent
+
+println "│ [OK] Документ создан: " + filePath;
+println "│ Сумма: " + (travelsum != null ? formattedTravelsum : "Не указано") + " RUB";
+
+// Сохраняем путь к документу в переменные
+execution.setVariable("documentPath", filePath);
+execution.setVariable("documentName", fileName);
+
+println "└─────────────────────────────────────────";
+println "service task completed: generate PDF document";</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_12lfzhn</bpmn:incoming>
+      <bpmn:outgoing>Flow_0y0u2w3</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_19x3mm1">
+        <bpmn:targetRef>DataObjectReference_1qeakfs</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0m1mp40">
       <bpmndi:BPMNShape id="Participant_09tajte_di" bpmnElement="Participant_09tajte" isHorizontal="true">
-        <dc:Bounds x="160" y="50" width="1130" height="320" />
+        <dc:Bounds x="160" y="50" width="1298" height="410" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
@@ -150,73 +378,96 @@ println "service task completed: calculate the amount of travel expenses";</camu
         <dc:Bounds x="330" y="210" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataObjectReference_1xygcfq_di" bpmnElement="DataObjectReference_1xygcfq">
-        <dc:Bounds x="652" y="115" width="36" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0gddcyz_di" bpmnElement="Activity_17z025s">
-        <dc:Bounds x="530" y="210" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1xbthqa_di" bpmnElement="Activity_0638qsz">
-        <dc:Bounds x="720" y="210" width="100" height="80" />
+        <dc:Bounds x="930" y="210" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0rqozjy_di" bpmnElement="Gateway_0rqozjy" isMarkerVisible="true">
-        <dc:Bounds x="885" y="225" width="50" height="50" />
+        <dc:Bounds x="1095" y="225" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="869" y="285" width="83" height="40" />
+          <dc:Bounds x="1079" y="285" width="83" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_03lzeu1_di" bpmnElement="Activity_0n8alms">
-        <dc:Bounds x="1000" y="100" width="100" height="80" />
+        <dc:Bounds x="1210" y="100" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0wgtu8v_di" bpmnElement="Event_0wgtu8v">
-        <dc:Bounds x="1182" y="232" width="36" height="36" />
+        <dc:Bounds x="1392" y="232" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1164" y="275" width="73" height="27" />
+          <dc:Bounds x="1374" y="275" width="73" height="27" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1an0glv_di" bpmnElement="DataStoreReference_1an0glv">
+        <dc:Bounds x="565" y="115" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_1qeakfs_di" bpmnElement="DataObjectReference_1qeakfs">
+        <dc:Bounds x="872" y="115" width="36" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0gddcyz_di" bpmnElement="Activity_17z025s">
+        <dc:Bounds x="630" y="210" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1y5vqfb_di" bpmnElement="Activity_12w96kd">
+        <dc:Bounds x="480" y="210" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1lkwq55_di" bpmnElement="Activity_0ii94cd">
+        <dc:Bounds x="780" y="210" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0e7r8h7_di" bpmnElement="Flow_0e7r8h7">
         <di:waypoint x="278" y="250" />
         <di:waypoint x="330" y="250" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_03ylu4f_di" bpmnElement="Flow_03ylu4f">
-        <di:waypoint x="430" y="250" />
-        <di:waypoint x="530" y="250" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_12c6n5b_di" bpmnElement="Flow_12c6n5b">
-        <di:waypoint x="630" y="250" />
-        <di:waypoint x="720" y="250" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0qwncjz_di" bpmnElement="Flow_0qwncjz">
-        <di:waypoint x="820" y="250" />
-        <di:waypoint x="885" y="250" />
+        <di:waypoint x="1030" y="250" />
+        <di:waypoint x="1095" y="250" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_038g0qp_di" bpmnElement="Flow_038g0qp">
-        <di:waypoint x="910" y="225" />
-        <di:waypoint x="910" y="140" />
-        <di:waypoint x="1000" y="140" />
+        <di:waypoint x="1120" y="225" />
+        <di:waypoint x="1120" y="140" />
+        <di:waypoint x="1210" y="140" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="919" y="180" width="13" height="14" />
+          <dc:Bounds x="1129" y="180" width="13" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_18iy0a0_di" bpmnElement="Flow_18iy0a0">
-        <di:waypoint x="935" y="250" />
-        <di:waypoint x="1182" y="250" />
+        <di:waypoint x="1145" y="250" />
+        <di:waypoint x="1392" y="250" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1050" y="232" width="17" height="14" />
+          <dc:Bounds x="1260" y="232" width="17" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1ewuvy4_di" bpmnElement="Flow_1ewuvy4">
-        <di:waypoint x="1100" y="140" />
-        <di:waypoint x="1136" y="140" />
-        <di:waypoint x="1136" y="250" />
-        <di:waypoint x="1182" y="250" />
+        <di:waypoint x="1310" y="140" />
+        <di:waypoint x="1346" y="140" />
+        <di:waypoint x="1346" y="250" />
+        <di:waypoint x="1392" y="250" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataOutputAssociation_02lsa6z_di" bpmnElement="DataOutputAssociation_02lsa6z">
-        <di:waypoint x="613" y="210" />
-        <di:waypoint x="652" y="161" />
+      <bpmndi:BPMNEdge id="Flow_03dtqtq_di" bpmnElement="Flow_03dtqtq">
+        <di:waypoint x="430" y="250" />
+        <di:waypoint x="480" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12lfzhn_di" bpmnElement="Flow_12lfzhn">
+        <di:waypoint x="730" y="250" />
+        <di:waypoint x="780" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0y0u2w3_di" bpmnElement="Flow_0y0u2w3">
+        <di:waypoint x="880" y="250" />
+        <di:waypoint x="930" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v331ow_di" bpmnElement="Flow_1v331ow">
+        <di:waypoint x="580" y="250" />
+        <di:waypoint x="630" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1xm15nv_di" bpmnElement="DataOutputAssociation_1xm15nv">
+        <di:waypoint x="552" y="210" />
+        <di:waypoint x="576" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_19x3mm1_di" bpmnElement="DataOutputAssociation_19x3mm1">
+        <di:waypoint x="852" y="210" />
+        <di:waypoint x="876" y="165" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
