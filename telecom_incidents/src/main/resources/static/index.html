@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TTM Lite - Управление инцидентами</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 25px; }
+        .status { color: #27ae60; font-weight: bold; }
+        .form-group { margin: 15px 0; }
+        label { display: inline-block; width: 150px; font-weight: bold; }
+        input, select { padding: 8px; width: 300px; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #2980b9; }
+        button.success { background: #2ecc71; }
+        button.success:hover { background: #27ae60; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f2f2f2; }
+        .badge { padding: 3px 8px; border-radius: 4px; color: white; font-size: 12px; }
+        .badge-CREATED { background: #95a5a6; }
+        .badge-IN_PROGRESS { background: #3498db; }
+        .badge-CLOSED { background: #27ae60; }
+        .badge-COMPLETED { background: #27ae60; }
+        .error { color: #e74c3c; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 13px; }
+        .task-card { background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 4px; border-left: 4px solid #3498db; }
+        .task-id { font-weight: bold; color: #2c3e50; }
+        .task-type { color: #7f8c8d; }
+        .empty { color: #95a5a6; font-style: italic; }
+        .rule-item { padding: 8px; margin: 5px 0; background: #e8f4fd; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 TTM Lite — Система управления инцидентами</h1>
+        <p class="status">✅ Сервер работает: http://localhost:8081 | 💾 База данных: H2</p>
+        
+        <hr>
+        
+        <h2>📝 Создание инцидента</h2>
+        <form id="incidentForm">
+            <div class="form-group">
+                <label>Клиент *</label>
+                <input type="text" id="clientName" placeholder="Наименование организации" required>
+            </div>
+            <div class="form-group">
+                <label>Услуга</label>
+                <select id="serviceType">
+                    <option value="Интернет">Интернет</option>
+                    <option value="VPN L2/L3">VPN L2/L3</option>
+                    <option value="Wi-Fi Hotspot">Wi-Fi Hotspot</option>
+                    <option value="OTT">OTT</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Тип проблемы</label>
+                <select id="problemType">
+                    <option value="Клиентская">Клиентская</option>
+                    <option value="Сетевая">Сетевая</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Макросегмент</label>
+                <select id="macroSegment">
+                    <option value="B2B">B2B</option>
+                    <option value="B2G">B2G</option>
+                    <option value="B2C">B2C</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Адрес</label>
+                <input type="text" id="address" placeholder="Адрес клиента" style="width: 500px;">
+            </div>
+            <button type="submit">🚀 Создать инцидент</button>
+            <button type="button" class="success" onclick="loadAllData()">🔄 Обновить</button>
+        </form>
+        
+        <hr>
+        
+        <h2>📋 Список инцидентов</h2>
+        <div id="incidentsContainer">
+            <p>Загрузка...</p>
+        </div>
+        
+        <hr>
+        
+        <h2>📋 Задания</h2>
+        <div id="tasksContainer">
+            <p>Загрузка...</p>
+        </div>
+        
+        <hr>
+        
+        <h2>📊 Доступные правила</h2>
+        <div id="rulesContainer">
+            <p>Введите ID задания, чтобы увидеть доступные правила</p>
+            <div class="form-group">
+                <label>ID задания:</label>
+                <input type="text" id="taskIdInput" placeholder="Например: TASK-..." style="width: 300px;">
+                <button onclick="loadRules()">🔍 Показать правила</button>
+            </div>
+            <div id="rulesResult"></div>
+        </div>
+        
+        <hr>
+        
+        <h2>🔍 Тестирование API</h2>
+        <details>
+            <summary>Примеры запросов (нажмите, чтобы развернуть)</summary>
+            <pre>
+# Создать инцидент
+curl -X POST http://localhost:8081/api/incidents \
+  -H "Content-Type: application/json" \
+  -d '{"clientName":"Тестовый клиент","serviceType":"Интернет","problemType":"Клиентская","macroSegment":"B2B","address":"г. Москва"}'
+
+# Получить список инцидентов
+curl http://localhost:8081/api/incidents
+
+# Получить задания
+curl http://localhost:8081/api/tasks
+
+# Получить правила для задания (подставьте реальный taskId)
+curl http://localhost:8081/api/tasks/{taskId}/rules
+
+# Завершить задание
+curl -X POST http://localhost:8081/api/tasks/{taskId}/complete \
+  -H "Content-Type: application/json" \
+  -d '{"ruleId":14527,"comment":"Проблема решена"}'
+            </pre>
+        </details>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:8081/api';
+        
+        async function loadAllData() {
+            await loadIncidents();
+            await loadTasks();
+        }
+        
+        async function loadIncidents() {
+            try {
+                const response = await fetch(`${API_URL}/incidents`);
+                const data = await response.json();
+                const container = document.getElementById('incidentsContainer');
+                
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p class="empty">Нет инцидентов. Создайте первый!</p>';
+                    return;
+                }
+                
+                let html = `<table>
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Клиент</th>
+                            <th>Услуга</th>
+                            <th>Статус</th>
+                            <th>Приоритет</th>
+                            <th>Адрес</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+                
+                data.forEach(inc => {
+                    const status = inc.STATUS || 'CREATED';
+                    const statusClass = 'badge-' + status;
+                    
+                    html += `<tr>
+                        <td><strong>${inc.NUMBER || '—'}</strong></td>
+                        <td>${inc.CLIENT_NAME || '—'}</td>
+                        <td>${inc.SERVICE_TYPE || '—'}</td>
+                        <td><span class="badge ${statusClass}">${status}</span></td>
+                        <td>${inc.PRIORITY || 5}</td>
+                        <td>${inc.ADDRESS ? inc.ADDRESS.substring(0, 40) + (inc.ADDRESS.length > 40 ? '...' : '') : '—'}</td>
+                        <td><button onclick="viewIncident(${inc.ID})" style="padding: 5px 10px; font-size: 12px;">Подробнее</button></td>
+                    </tr>`;
+                });
+                
+                html += `</tbody></table>
+                    <p style="margin-top: 10px; color: #7f8c8d; font-size: 14px;">Всего: ${data.length} инцидентов</p>`;
+                container.innerHTML = html;
+            } catch (error) {
+                document.getElementById('incidentsContainer').innerHTML = 
+                    `<p class="error">❌ Ошибка загрузки: ${error.message}</p>`;
+            }
+        }
+        
+        async function loadTasks() {
+            try {
+                const response = await fetch(`${API_URL}/tasks`);
+                const data = await response.json();
+                const container = document.getElementById('tasksContainer');
+                
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p class="empty">Нет активных заданий</p>';
+                    return;
+                }
+                
+                let html = '';
+                data.forEach(task => {
+                    const status = task.STATUS || 'CREATED';
+                    const statusColor = status === 'COMPLETED' ? '#27ae60' : '#3498db';
+                    
+                    html += `<div class="task-card">
+                        <span class="task-id">${task.ID || '—'}</span>
+                        <span class="task-type">| Тип: ${task.TASK_TYPE || '—'}</span>
+                        <span class="task-type">| Роль: ${task.UNIT_ROLE || '—'}</span>
+                        <span style="color: ${statusColor}; font-weight: bold;">| ${status}</span>
+                        ${task.RESULT ? `| Результат: ${task.RESULT}` : ''}
+                        ${task.CLOSED_DATE ? `| Закрыто: ${new Date(task.CLOSED_DATE).toLocaleString()}` : ''}
+                    </div>`;
+                });
+                
+                html += `<p style="color: #7f8c8d; font-size: 14px;">Всего: ${data.length} заданий</p>`;
+                container.innerHTML = html;
+            } catch (error) {
+                document.getElementById('tasksContainer').innerHTML = 
+                    `<p class="error">❌ Ошибка загрузки: ${error.message}</p>`;
+            }
+        }
+        
+        async function loadRules() {
+            const taskId = document.getElementById('taskIdInput').value.trim();
+            const resultDiv = document.getElementById('rulesResult');
+            
+            if (!taskId) {
+                resultDiv.innerHTML = '<p class="error">⚠️ Введите ID задания</p>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/tasks/${taskId}/rules`);
+                const data = await response.json();
+                
+                if (data.availableRules && data.availableRules.length > 0) {
+                    let html = `<p><strong>Доступные правила для задания ${taskId}:</strong></p>`;
+                    data.availableRules.forEach(rule => {
+                        html += `<div class="rule-item">
+                            🔹 <strong>${rule.DISPLAYNAME || 'Без названия'}</strong> 
+                            (ID: ${rule.RULEID || 'N/A'})
+                            ${rule.CLOSECODE ? `, CloseCode: ${rule.CLOSECODE}` : ''}
+                            ${rule.TARGETUNITROLE ? `, Цель: ${rule.TARGETUNITROLE}` : ''}
+                        </div>`;
+                    });
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = `<p class="empty">Нет доступных правил для задания ${taskId}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Ошибка: ${error.message}</p>`;
+                console.error('Error loading rules:', error);
+            }
+        }
+        
+        document.getElementById('incidentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                clientName: document.getElementById('clientName').value.trim(),
+                serviceType: document.getElementById('serviceType').value,
+                problemType: document.getElementById('problemType').value,
+                macroSegment: document.getElementById('macroSegment').value,
+                address: document.getElementById('address').value.trim()
+            };
+            
+            if (!data.clientName) {
+                alert('⚠️ Поле "Клиент" обязательно для заполнения');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/incidents`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                alert(`✅ Инцидент создан!\n№: ${result.NUMBER}\nID: ${result.ID}\nСтатус: ${result.STATUS}`);
+                
+                document.getElementById('incidentForm').reset();
+                await loadAllData();
+            } catch (error) {
+                alert(`❌ Ошибка: ${error.message}`);
+            }
+        });
+        
+        async function viewIncident(id) {
+            try {
+                const response = await fetch(`${API_URL}/incidents/${id}`);
+                const inc = await response.json();
+                alert(`📋 Инцидент #${inc.NUMBER}\n` +
+                      `Клиент: ${inc.CLIENT_NAME}\n` +
+                      `Услуга: ${inc.SERVICE_TYPE}\n` +
+                      `Тип проблемы: ${inc.PROBLEM_TYPE}\n` +
+                      `Статус: ${inc.STATUS}\n` +
+                      `Приоритет: ${inc.PRIORITY || 5}\n` +
+                      `Макросегмент: ${inc.MACRO_SEGMENT || '—'}\n` +
+                      `Адрес: ${inc.ADDRESS || 'не указан'}`);
+            } catch (error) {
+                alert(`Ошибка: ${error.message}`);
+            }
+        }
+        
+        loadAllData();
+        setInterval(loadAllData, 15000);
+    </script>
+</body>
+</html>
