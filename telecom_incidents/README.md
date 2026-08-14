@@ -300,4 +300,51 @@ curl http://localhost:8081/api/tasks/TASK-xxx/rules
 curl -X POST http://localhost:8081/api/tasks/TASK-xxx/complete \
   -H "Content-Type: application/json" \
   -d '{"ruleId": 14527, "comment": "Проблема решена"}'
-```   
+```
+
+### 🖥️ Тестирование через VS Code (REST Client)
+
+**Установка**
+1. Откройте VS Code (Ctrl+Shift+X)
+2. Найдите расширение REST Client (от Huachao Mao)
+3. Нажмите Install
+
+**Использование**
+В проекте есть файл test-api.http со всеми запросами:
+
+```
+### 1. Создать инцидент
+POST http://localhost:8081/api/incidents
+Content-Type: application/json
+
+{
+    "clientName": "Тестовый клиент",
+    "serviceType": "Интернет",
+    "problemType": "Клиентская",
+    "macroSegment": "B2B",
+    "address": "г. Москва, ул. Тестовая, д. 1"
+}
+
+### 2. Получить список инцидентов
+GET http://localhost:8081/api/incidents
+
+### 3. Получить список заданий
+GET http://localhost:8081/api/tasks
+
+### 4. Получить правила для задания
+GET http://localhost:8081/api/tasks/{{taskId}}/rules
+
+### 5. Завершить задание
+POST http://localhost:8081/api/tasks/{{taskId}}/complete
+Content-Type: application/json
+
+{
+    "ruleId": 14527,
+    "comment": "Проблема решена"
+}
+```
+**Как использовать:**
+
+1. Откройте файл test-api.http в VS Code
+2. Над каждым запросом появится кнопка Send Request
+3. Нажмите на неё — ответ откроется в соседней вкладке
