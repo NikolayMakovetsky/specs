@@ -1,0 +1,143 @@
+<mxfile host="Electron">
+  <diagram name="Страница-1" id="VTk7JsfrF9Uhhc7I1nUS">
+    <mxGraphModel dx="1407" dy="1022" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-17" parent="1" style="swimlane;html=1;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=0;startSize=20;horizontalStack=0;whiteSpace=wrap;" value="Подбор ментора" vertex="1">
+          <mxGeometry height="650" width="1370" x="120" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-18" parent="a6q_U900a8_KLhkLRLvJ-17" style="swimlane;html=1;startSize=20;horizontal=0;" value="Сотрудник (Менти)" vertex="1">
+          <mxGeometry height="140" width="1350" x="20" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-25" edge="1" parent="a6q_U900a8_KLhkLRLvJ-18" source="a6q_U900a8_KLhkLRLvJ-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-40" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="160" y="60" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-23" parent="a6q_U900a8_KLhkLRLvJ-18" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=standard;symbol=general;" value="сотрудник получил&lt;div&gt;должность в компании&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="50" x="80" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-26" parent="a6q_U900a8_KLhkLRLvJ-18" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=user;" value="подать заявку на менторство" vertex="1">
+          <mxGeometry height="80" width="120" x="408" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-40" parent="a6q_U900a8_KLhkLRLvJ-18" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=manual;" value="сформировать список компетенций для подбора ментора" vertex="1">
+          <mxGeometry height="80" width="180" x="184" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-63" edge="1" parent="a6q_U900a8_KLhkLRLvJ-18" source="a6q_U900a8_KLhkLRLvJ-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-26" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="100" as="sourcePoint" />
+            <mxPoint x="440" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-21" parent="a6q_U900a8_KLhkLRLvJ-17" style="swimlane;html=1;startSize=20;horizontal=0;" value="Система" vertex="1">
+          <mxGeometry height="250" width="1350" x="20" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-29" edge="1" parent="a6q_U900a8_KLhkLRLvJ-21" source="a6q_U900a8_KLhkLRLvJ-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-31" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="586" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-27" parent="a6q_U900a8_KLhkLRLvJ-21" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=service;" value="проверить наличие назначенного сотруднику ментора" vertex="1">
+          <mxGeometry height="80" width="136" x="400" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-33" edge="1" parent="a6q_U900a8_KLhkLRLvJ-21" source="a6q_U900a8_KLhkLRLvJ-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-35" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="696" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-34" connectable="0" parent="a6q_U900a8_KLhkLRLvJ-33" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="да" vertex="1">
+          <mxGeometry relative="1" x="0.0794" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-37" edge="1" parent="a6q_U900a8_KLhkLRLvJ-21" source="a6q_U900a8_KLhkLRLvJ-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-39" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="601" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-38" connectable="0" parent="a6q_U900a8_KLhkLRLvJ-37" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="нет" vertex="1">
+          <mxGeometry relative="1" x="-0.1319" y="-1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-31" parent="a6q_U900a8_KLhkLRLvJ-21" style="points=[[0.25,0.25,0],[0.5,0,0],[0.75,0.25,0],[1,0.5,0],[0.75,0.75,0],[0.5,1,0],[0.25,0.75,0],[0,0.5,0]];shape=mxgraph.bpmn.gateway2;html=1;verticalLabelPosition=top;labelBackgroundColor=#ffffff;verticalAlign=bottom;align=center;perimeter=rhombusPerimeter;outlineConnect=0;outline=none;symbol=none;gwType=exclusive;labelPosition=center;" value="есть ментор?" vertex="1">
+          <mxGeometry height="50" width="50" x="596" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-35" parent="a6q_U900a8_KLhkLRLvJ-21" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=end;symbol=message;" value="у вас уже есть&lt;div&gt;назначенный ментор&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="50" x="706" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-39" parent="a6q_U900a8_KLhkLRLvJ-21" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=service;" value="сформировать для HR список кандидатов в менторы для данного сотрудника на основании его списка компетенций" vertex="1">
+          <mxGeometry height="50" width="289.75" x="476.12" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-73" parent="a6q_U900a8_KLhkLRLvJ-21" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=service;" value="создать пару ментор-менти" vertex="1">
+          <mxGeometry height="80" width="120" x="925" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-76" parent="a6q_U900a8_KLhkLRLvJ-21" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=top;labelBackgroundColor=#ffffff;verticalAlign=bottom;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=end;symbol=message;labelPosition=center;" value="заявка отклонена" vertex="1">
+          <mxGeometry height="50" width="50" x="1230" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-78" parent="a6q_U900a8_KLhkLRLvJ-21" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=end;symbol=message;" value="ментор назначен" vertex="1">
+          <mxGeometry height="50" width="50" x="1230" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-79" edge="1" parent="a6q_U900a8_KLhkLRLvJ-21" source="a6q_U900a8_KLhkLRLvJ-73" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-78">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-19" parent="a6q_U900a8_KLhkLRLvJ-17" style="swimlane;html=1;startSize=20;horizontal=0;" value="HR-менеджер" vertex="1">
+          <mxGeometry height="130" width="1350" x="20" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-41" parent="a6q_U900a8_KLhkLRLvJ-19" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=user;" value="выбрать ментора из&amp;nbsp; списка" vertex="1">
+          <mxGeometry height="80" width="150" x="546" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-62" parent="a6q_U900a8_KLhkLRLvJ-19" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=user;" value="отправить приглашение ментору" vertex="1">
+          <mxGeometry height="80" width="120" x="750" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-65" edge="1" parent="a6q_U900a8_KLhkLRLvJ-19" source="a6q_U900a8_KLhkLRLvJ-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-62" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="740" y="-10" as="sourcePoint" />
+            <mxPoint x="800" y="-10" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-20" parent="a6q_U900a8_KLhkLRLvJ-17" style="swimlane;html=1;startSize=20;horizontal=0;" value="Ментор" vertex="1">
+          <mxGeometry height="130" width="1350" x="20" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-69" parent="a6q_U900a8_KLhkLRLvJ-20" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=user;" value="рассмотреть приглашение" vertex="1">
+          <mxGeometry height="80" width="120" x="750" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-70" parent="a6q_U900a8_KLhkLRLvJ-20" style="points=[[0.25,0.25,0],[0.5,0,0],[0.75,0.25,0],[1,0.5,0],[0.75,0.75,0],[0.5,1,0],[0.25,0.75,0],[0,0.5,0]];shape=mxgraph.bpmn.gateway2;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=rhombusPerimeter;outlineConnect=0;outline=none;symbol=none;gwType=exclusive;labelPosition=center;" value="согласен взять менти?" vertex="1">
+          <mxGeometry height="45" width="50" x="960" y="37.5" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-72" edge="1" parent="a6q_U900a8_KLhkLRLvJ-20" source="a6q_U900a8_KLhkLRLvJ-69" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-70">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-30" edge="1" parent="a6q_U900a8_KLhkLRLvJ-17" source="a6q_U900a8_KLhkLRLvJ-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-64" edge="1" parent="a6q_U900a8_KLhkLRLvJ-17" source="a6q_U900a8_KLhkLRLvJ-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-41" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="880" y="370" as="sourcePoint" />
+            <mxPoint x="940" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-71" edge="1" parent="a6q_U900a8_KLhkLRLvJ-17" source="a6q_U900a8_KLhkLRLvJ-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-69">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-77" edge="1" parent="a6q_U900a8_KLhkLRLvJ-17" source="a6q_U900a8_KLhkLRLvJ-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-73">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-81" connectable="0" parent="a6q_U900a8_KLhkLRLvJ-77" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="да" vertex="1">
+          <mxGeometry relative="1" x="-0.3392" as="geometry">
+            <mxPoint y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-80" edge="1" parent="a6q_U900a8_KLhkLRLvJ-17" source="a6q_U900a8_KLhkLRLvJ-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" target="a6q_U900a8_KLhkLRLvJ-76">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6q_U900a8_KLhkLRLvJ-82" connectable="0" parent="a6q_U900a8_KLhkLRLvJ-80" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="нет" vertex="1">
+          <mxGeometry relative="1" x="-0.5144" y="4" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
