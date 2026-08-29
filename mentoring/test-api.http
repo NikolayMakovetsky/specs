@@ -1,0 +1,157 @@
+### Переменные
+@host = http://127.0.0.1:4010
+
+### ==================== USERS ====================
+
+### Получить список пользователей
+GET {{host}}/users
+Accept: application/json
+
+### Создать нового пользователя
+POST {{host}}/users
+Content-Type: application/json
+
+{
+  "full_name": "Петров Пётр Петрович",
+  "email": "petrov@company.com",
+  "department_id": 3,
+  "position_id": 8,
+  "is_mentor": true
+}
+
+### Получить пользователя по ID (замените 1 на реальный ID)
+GET {{host}}/users/1
+Accept: application/json
+
+### Обновить пользователя
+PUT {{host}}/users/1
+Content-Type: application/json
+
+{
+  "full_name": "Иванов Иван Иванович (обновлён)",
+  "department_id": 7
+}
+
+### ==================== MENTORS ====================
+
+### Получить список менторов
+GET {{host}}/mentors
+Accept: application/json
+
+### Получить список активных менторов
+GET {{host}}/mentors?is_active=true
+Accept: application/json
+
+### Создать профиль ментора
+POST {{host}}/mentors
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "experience": 5
+}
+
+### Получить профиль ментора по ID
+GET {{host}}/mentors/1
+Accept: application/json
+
+### ==================== COMPETENCIES ====================
+
+### Получить список компетенций
+GET {{host}}/competencies
+Accept: application/json
+
+### Создать компетенцию
+POST {{host}}/competencies
+Content-Type: application/json
+
+{
+  "name": "DevOps",
+  "category": "Infrastructure",
+  "description": "CI/CD, Docker, Kubernetes"
+}
+
+### ==================== REQUESTS ====================
+
+### Получить список заявок
+GET {{host}}/requests
+Accept: application/json
+
+### Получить заявки со статусом "created"
+GET {{host}}/requests?status=created
+Accept: application/json
+
+### Создать заявку на менторство
+POST {{host}}/requests
+Content-Type: application/json
+
+{
+  "user_id": 2,
+  "competency_list": "Java, Spring, PostgreSQL"
+}
+
+### Изменить статус заявки (HR назначает ментора)
+PUT {{host}}/requests/1/status
+Content-Type: application/json
+
+{
+  "status": "under_review",
+  "mentor_id": 1
+}
+
+### ==================== PAIRS ====================
+
+### Получить список менторских пар
+GET {{host}}/pairs
+Accept: application/json
+
+### Получить активные пары
+GET {{host}}/pairs?status=active
+Accept: application/json
+
+### Получить пару по ID
+GET {{host}}/pairs/1
+Accept: application/json
+
+### Закрыть пару
+PUT {{host}}/pairs/1
+Content-Type: application/json
+
+{
+  "status": "closed",
+  "end_date": "2026-08-27"
+}
+
+### ==================== MEETINGS ====================
+
+### Получить список встреч
+GET {{host}}/meetings
+Accept: application/json
+
+### Получить встречи по паре
+GET {{host}}/meetings?pair_id=1
+Accept: application/json
+
+### Создать встречу
+POST {{host}}/meetings
+Content-Type: application/json
+
+{
+  "mentoring_pair_id": 1,
+  "meeting_start_date": "2026-08-27T14:00:00Z",
+  "meeting_end_date": "2026-08-27T15:00:00Z",
+  "mentor_mark": 5,
+  "mentee_mark": 4,
+  "mentor_comment": "Прогресс отличный!",
+  "mentee_comment": "Ментор очень помог"
+}
+
+### Обновить встречу
+PUT {{host}}/meetings/1
+Content-Type: application/json
+
+{
+  "mentor_mark": 5,
+  "mentee_mark": 5,
+  "mentor_comment": "Ещё лучше, чем ожидал!"
+}
