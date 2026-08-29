@@ -1,0 +1,1003 @@
+openapi: 3.0.3
+info:
+  title: Mentoring System API
+  description: API для системы управления корпоративным менторством
+  version: 1.0.0
+  contact:
+    name: System Analyst
+    email: analyst@company.com
+
+servers:
+  - url: https://api.mentoring.company.com/v1
+    description: Production server
+  - url: http://localhost:8080/api
+    description: Development server
+
+tags:
+  - name: Users
+    description: Управление пользователями
+  - name: Mentors
+    description: Управление профилями менторов
+  - name: Competencies
+    description: Управление компетенциями
+  - name: Requests
+    description: Управление заявками на менторство
+  - name: Pairs
+    description: Управление менторскими парами
+  - name: Meetings
+    description: Управление встречами
+
+paths:
+  # ==================== USERS ====================
+  /users:
+    get:
+      tags: [Users]
+      summary: Получить список пользователей
+      parameters:
+        - name: department_id
+          in: query
+          schema:
+            type: integer
+          description: Фильтр по ID отдела
+        - name: is_mentor
+          in: query
+          schema:
+            type: boolean
+          description: Фильтр по роли ментора
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+          description: Количество записей на страницу
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Смещение для пагинации
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+    post:
+      tags: [Users]
+      summary: Создать нового пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: Пользователь создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Пользователь с таким email уже существует
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{id}:
+    get:
+      tags: [Users]
+      summary: Получить пользователя по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID пользователя
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags: [Users]
+      summary: Обновить данные пользователя
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: Пользователь обновлён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ==================== MENTORS ====================
+  /mentors:
+    get:
+      tags: [Mentors]
+      summary: Получить список менторов
+      parameters:
+        - name: competency_id
+          in: query
+          schema:
+            type: integer
+          description: Фильтр по компетенции
+        - name: is_active
+          in: query
+          schema:
+            type: boolean
+          description: Фильтр по активности
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Mentor'
+                  total:
+                    type: integer
+
+    post:
+      tags: [Mentors]
+      summary: Создать профиль ментора
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MentorCreate'
+      responses:
+        '201':
+          description: Профиль ментора создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mentor'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: Пользователь не найден
+
+  /mentors/{id}:
+    get:
+      tags: [Mentors]
+      summary: Получить профиль ментора по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mentor'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags: [Mentors]
+      summary: Обновить профиль ментора
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MentorUpdate'
+      responses:
+        '200':
+          description: Профиль обновлён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mentor'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ==================== COMPETENCIES ====================
+  /competencies:
+    get:
+      tags: [Competencies]
+      summary: Получить список компетенций
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: Фильтр по категории
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Competency'
+
+    post:
+      tags: [Competencies]
+      summary: Создать новую компетенцию
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompetencyCreate'
+      responses:
+        '201':
+          description: Компетенция создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Competency'
+        '409':
+          description: Компетенция с таким названием уже существует
+
+  /competencies/{id}:
+    delete:
+      tags: [Competencies]
+      summary: Удалить компетенцию
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Компетенция удалена
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ==================== REQUESTS ====================
+  /requests:
+    get:
+      tags: [Requests]
+      summary: Получить список заявок
+      parameters:
+        - name: user_id
+          in: query
+          schema:
+            type: integer
+          description: Фильтр по ID заявителя
+        - name: mentor_id
+          in: query
+          schema:
+            type: integer
+          description: Фильтр по ID ментора
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [created, under_review, approved, rejected]
+          description: Фильтр по статусу
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Request'
+                  total:
+                    type: integer
+
+    post:
+      tags: [Requests]
+      summary: Создать заявку на менторство
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreate'
+      responses:
+        '201':
+          description: Заявка создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: У пользователя уже есть активная заявка
+
+  /requests/{id}/status:
+    put:
+      tags: [Requests]
+      summary: Изменить статус заявки
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [under_review, approved, rejected]
+                  description: Новый статус заявки
+                mentor_id:
+                  type: integer
+                  description: ID назначенного ментора (для статуса under_review)
+      responses:
+        '200':
+          description: Статус обновлён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ==================== PAIRS ====================
+  /pairs:
+    get:
+      tags: [Pairs]
+      summary: Получить список менторских пар
+      parameters:
+        - name: mentor_id
+          in: query
+          schema:
+            type: integer
+          description: Фильтр по ментору
+        - name: mentee_id
+          in: query
+          schema:
+            type: integer
+          description: Фильтр по менти
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, closed]
+          description: Фильтр по статусу
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MentoringPair'
+                  total:
+                    type: integer
+
+  /pairs/{id}:
+    get:
+      tags: [Pairs]
+      summary: Получить пару по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MentoringPair'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags: [Pairs]
+      summary: Обновить статус пары
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [active, closed]
+                end_date:
+                  type: string
+                  format: date
+                  description: Дата завершения (для статуса closed)
+      responses:
+        '200':
+          description: Статус обновлён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MentoringPair'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ==================== MEETINGS ====================
+  /meetings:
+    get:
+      tags: [Meetings]
+      summary: Получить список встреч
+      parameters:
+        - name: pair_id
+          in: query
+          schema:
+            type: integer
+          description: Фильтр по ID пары
+        - name: from_date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Начало периода
+        - name: to_date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Конец периода
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Meeting'
+                  total:
+                    type: integer
+
+    post:
+      tags: [Meetings]
+      summary: Создать встречу
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeetingCreate'
+      responses:
+        '201':
+          description: Встреча создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: Пара не найдена
+
+  /meetings/{id}:
+    put:
+      tags: [Meetings]
+      summary: Обновить данные встречи
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeetingUpdate'
+      responses:
+        '200':
+          description: Встреча обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  schemas:
+    # ========== USER ==========
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        full_name:
+          type: string
+          example: "Иванов Иван Иванович"
+        email:
+          type: string
+          format: email
+          example: "ivanov@company.com"
+        department_id:
+          type: integer
+          nullable: true
+          example: 5
+        position_id:
+          type: integer
+          nullable: true
+          example: 12
+        is_mentor:
+          type: boolean
+          default: false
+        is_mentee:
+          type: boolean
+          default: false
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    UserCreate:
+      type: object
+      required: [full_name, email]
+      properties:
+        full_name:
+          type: string
+          example: "Иванов Иван Иванович"
+        email:
+          type: string
+          format: email
+          example: "ivanov@company.com"
+        department_id:
+          type: integer
+          nullable: true
+        position_id:
+          type: integer
+          nullable: true
+        is_mentor:
+          type: boolean
+          default: false
+        is_mentee:
+          type: boolean
+          default: false
+
+    UserUpdate:
+      type: object
+      properties:
+        full_name:
+          type: string
+        department_id:
+          type: integer
+          nullable: true
+        position_id:
+          type: integer
+          nullable: true
+        is_mentor:
+          type: boolean
+        is_mentee:
+          type: boolean
+
+    # ========== MENTOR ==========
+    Mentor:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 10
+        user:
+          $ref: '#/components/schemas/User'
+        experience:
+          type: integer
+          description: Опыт в годах
+          example: 5
+        rating:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 5
+          example: 4.7
+        competencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/MentorCompetency'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    MentorCreate:
+      type: object
+      required: [user_id]
+      properties:
+        user_id:
+          type: integer
+          example: 10
+        experience:
+          type: integer
+          example: 3
+        competencies:
+          type: array
+          items:
+            type: object
+            properties:
+              competency_id:
+                type: integer
+              level:
+                type: integer
+                minimum: 1
+                maximum: 5
+
+    MentorUpdate:
+      type: object
+      properties:
+        experience:
+          type: integer
+        is_active:
+          type: boolean
+
+    # ========== COMPETENCY ==========
+    Competency:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Java Development"
+        category:
+          type: string
+          example: "Programming"
+        description:
+          type: string
+          example: "Разработка на Java, Spring Boot, микросервисы"
+
+    CompetencyCreate:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          example: "Java Development"
+        category:
+          type: string
+          example: "Programming"
+        description:
+          type: string
+
+    MentorCompetency:
+      type: object
+      properties:
+        mentor_id:
+          type: integer
+        competency_id:
+          type: integer
+        competency:
+          $ref: '#/components/schemas/Competency'
+        level:
+          type: integer
+          minimum: 1
+          maximum: 5
+          example: 4
+
+    # ========== REQUEST ==========
+    Request:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        request_type:
+          type: string
+          enum: [mentor, mentee]
+          example: "mentor"
+        status:
+          type: string
+          enum: [created, under_review, approved, rejected]
+          example: "under_review"
+        user_id:
+          type: integer
+          example: 10
+        user:
+          $ref: '#/components/schemas/User'
+        mentor_id:
+          type: integer
+          nullable: true
+          example: 5
+        mentor:
+          $ref: '#/components/schemas/Mentor'
+        competency_list:
+          type: string
+          description: Список компетенций в виде текста (для простоты)
+          example: "Java, Spring, SQL"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    RequestCreate:
+      type: object
+      required: [user_id, competency_list]
+      properties:
+        user_id:
+          type: integer
+          example: 10
+        request_type:
+          type: string
+          enum: [mentor, mentee]
+          default: "mentor"
+        competency_list:
+          type: string
+          example: "Java, Spring, SQL"
+
+    # ========== MENTORING PAIR ==========
+    MentoringPair:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        mentor_id:
+          type: integer
+          example: 5
+        mentor:
+          $ref: '#/components/schemas/Mentor'
+        mentee_id:
+          type: integer
+          example: 10
+        mentee:
+          $ref: '#/components/schemas/User'
+        status:
+          type: string
+          enum: [active, closed]
+          example: "active"
+        start_date:
+          type: string
+          format: date
+          example: "2026-01-15"
+        end_date:
+          type: string
+          format: date
+          nullable: true
+          example: "2026-07-15"
+        request_id:
+          type: integer
+          example: 3
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    # ========== MEETING ==========
+    Meeting:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        mentoring_pair_id:
+          type: integer
+          example: 1
+        meeting_start_date:
+          type: string
+          format: date-time
+          example: "2026-01-20T14:00:00Z"
+        meeting_end_date:
+          type: string
+          format: date-time
+          example: "2026-01-20T15:00:00Z"
+        mentor_mark:
+          type: integer
+          minimum: 1
+          maximum: 5
+          nullable: true
+          example: 5
+        mentee_mark:
+          type: integer
+          minimum: 1
+          maximum: 5
+          nullable: true
+          example: 4
+        mentor_comment:
+          type: string
+          nullable: true
+          example: "Прогресс отличный!"
+        mentee_comment:
+          type: string
+          nullable: true
+          example: "Ментор очень помог с настройкой проекта"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    MeetingCreate:
+      type: object
+      required: [mentoring_pair_id, meeting_start_date, meeting_end_date]
+      properties:
+        mentoring_pair_id:
+          type: integer
+          example: 1
+        meeting_start_date:
+          type: string
+          format: date-time
+          example: "2026-01-20T14:00:00Z"
+        meeting_end_date:
+          type: string
+          format: date-time
+          example: "2026-01-20T15:00:00Z"
+        mentor_mark:
+          type: integer
+          minimum: 1
+          maximum: 5
+        mentee_mark:
+          type: integer
+          minimum: 1
+          maximum: 5
+        mentor_comment:
+          type: string
+        mentee_comment:
+          type: string
+
+    MeetingUpdate:
+      type: object
+      properties:
+        meeting_start_date:
+          type: string
+          format: date-time
+        meeting_end_date:
+          type: string
+          format: date-time
+        mentor_mark:
+          type: integer
+          minimum: 1
+          maximum: 5
+          nullable: true
+        mentee_mark:
+          type: integer
+          minimum: 1
+          maximum: 5
+          nullable: true
+        mentor_comment:
+          type: string
+          nullable: true
+        mentee_comment:
+          type: string
+          nullable: true
+
+    # ========== ERRORS ==========
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "VALIDATION_ERROR"
+        message:
+          type: string
+          example: "Некорректные данные запроса"
+        details:
+          type: object
+          additionalProperties: true
+
+  responses:
+    BadRequest:
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Ресурс не найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalError:
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
