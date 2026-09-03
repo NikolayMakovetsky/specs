@@ -1,0 +1,1 @@
+Readme for pet-project "Scoring system"
