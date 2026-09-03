@@ -1,0 +1,114 @@
+<mxfile host="Electron" agent="Mozilla/5.0">
+  <diagram name="AS-IS TO-BE" id="diagram1">
+    <mxGraphModel dx="1106" dy="803" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1a1a1a;" value="Диаграмма AS-IS / TO-BE: Трансформация в системного аналитика" vertex="1">
+          <mxGeometry height="40" width="900" x="134" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="gPxM-gQfM1B7R4wF8o55-1" edge="1" parent="1" source="asis-container" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endSize=10;startSize=6;strokeWidth=3;" target="tobe-container" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="690" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="asis-container" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffcccc;strokeColor=#b85454;fontColor=#b85454;fontStyle=1;fontSize=16;startSize=40;swimlaneFillColor=#fff5f5;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;AS-IS (Текущее состояние)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="701" width="450" x="120" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="asis-person" parent="asis-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85454;fontColor=#b85454;fontSize=14;fontStyle=1;arcSize=15;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;👤 Я&lt;/font&gt;" vertex="1">
+          <mxGeometry height="50" width="120" x="200" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="asis-watch" parent="asis-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85454;fontColor=#b85454;fontSize=14;arcSize=15;" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;🎬 Смотрю видео - уроки&lt;/font&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="50" width="230" x="60" y="171" as="geometry" />
+        </mxCell>
+        <mxCell id="asis-confusion" parent="asis-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85454;fontColor=#b85454;fontSize=14;arcSize=15;" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;💫 Хаотично изучаю материалы&lt;/font&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="60" width="280" x="120" y="281" as="geometry" />
+        </mxCell>
+        <mxCell id="asis-send" parent="asis-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85454;fontColor=#b85454;fontSize=14;arcSize=15;" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;📤 Отправляю резюме&lt;/font&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="50" width="205" x="45" y="421" as="geometry" />
+        </mxCell>
+        <mxCell id="asis-reject" parent="asis-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6b8b7;strokeColor=#b85454;fontColor=#b85454;fontSize=16;fontStyle=1;arcSize=15;" value="❌ &lt;font style=&quot;font-size: 18px;&quot;&gt;ОТКАЗ&lt;/font&gt;" vertex="1">
+          <mxGeometry height="50" width="150" x="240" y="531" as="geometry" />
+        </mxCell>
+        <mxCell id="asis-arrow1" edge="1" parent="asis-container" source="asis-person" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b85454;strokeWidth=2;endArrow=block;endFill=1;" target="asis-watch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="asis-label" parent="asis-container" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#b85454;fontStyle=2;" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;🚫 Хаотичный процесс&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;(нет системы, нет артефактов)&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="40" width="390" x="25" y="641" as="geometry" />
+        </mxCell>
+        <mxCell id="gPxM-gQfM1B7R4wF8o55-3" edge="1" parent="asis-container" source="asis-watch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b85454;strokeWidth=2;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="asis-confusion">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="375" y="160" as="sourcePoint" />
+            <mxPoint x="300" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gPxM-gQfM1B7R4wF8o55-4" edge="1" parent="asis-container" source="asis-confusion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b85454;strokeWidth=2;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="asis-send">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="445" y="330" as="sourcePoint" />
+            <mxPoint x="370" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gPxM-gQfM1B7R4wF8o55-6" edge="1" parent="asis-container" source="asis-send" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b85454;strokeWidth=2;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="asis-reject">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="155" y="410" as="sourcePoint" />
+            <mxPoint x="60" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tobe-container" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=light-dark(#82b366, #d68080);fontColor=#82b366;fontStyle=1;fontSize=16;startSize=40;swimlaneFillColor=#f0f8f0;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;TO-BE (Целевое состояние)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="701" width="480" x="620" y="79" as="geometry" />
+        </mxCell>
+        <mxCell id="tobe-person" parent="tobe-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#82b366;fontSize=14;fontStyle=1;arcSize=15;" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;👤 Я (системный аналитик)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="50" width="240" x="200" y="71" as="geometry" />
+        </mxCell>
+        <mxCell id="tobe-analyze" parent="tobe-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#82b366;fontSize=14;arcSize=15;" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;📋&amp;nbsp;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;Систематизирую знания&lt;/font&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="50" width="400" x="40" y="171" as="geometry" />
+        </mxCell>
+        <mxCell id="tobe-spec" parent="tobe-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#82b366;fontSize=14;arcSize=15;" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;📄 Накапливаю опыт в написании ТЗ&lt;/font&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="50" width="400" x="40" y="251" as="geometry" />
+        </mxCell>
+        <mxCell id="tobe-communicate" parent="tobe-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#82b366;fontSize=14;arcSize=15;" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;&lt;span style=&quot;color: rgb(184, 84, 84);&quot;&gt;📤&amp;nbsp;&lt;/span&gt;Отправляю резюме&lt;/font&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="50" width="200" x="40" y="431" as="geometry" />
+        </mxCell>
+        <mxCell id="tobe-product" parent="tobe-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#82b366;fontSize=14;arcSize=15;" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;🚀 Создаю продукты (артефакты в портфолио)&lt;/font&gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="50" width="400" x="40" y="331" as="geometry" />
+        </mxCell>
+        <mxCell id="tobe-offer" parent="tobe-container" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bae8ba;strokeColor=#82b366;fontColor=#2d7d2d;fontSize=18;fontStyle=1;arcSize=15;" value="🎯 ОФФЕР" vertex="1">
+          <mxGeometry height="60" width="120" x="305" y="531" as="geometry" />
+        </mxCell>
+        <mxCell id="tobe-arrow1" edge="1" parent="tobe-container" source="tobe-person" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82b366;strokeWidth=2;endArrow=block;endFill=1;" target="tobe-analyze">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tobe-label" parent="tobe-container" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontColor=#82b366;fontStyle=2;" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;✅ Управляемый процесс&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;с чёткими артефактами&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="40" width="370" x="70" y="641" as="geometry" />
+        </mxCell>
+        <mxCell id="gPxM-gQfM1B7R4wF8o55-7" edge="1" parent="tobe-container" source="tobe-analyze" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82b366;strokeWidth=2;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="tobe-spec">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="445" y="281" as="sourcePoint" />
+            <mxPoint x="365" y="331" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gPxM-gQfM1B7R4wF8o55-8" edge="1" parent="tobe-container" source="tobe-spec" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82b366;strokeWidth=2;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="tobe-product">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="485" y="471" as="sourcePoint" />
+            <mxPoint x="405" y="521" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gPxM-gQfM1B7R4wF8o55-9" edge="1" parent="tobe-container" source="tobe-product" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82b366;strokeWidth=2;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="tobe-communicate">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="451" as="sourcePoint" />
+            <mxPoint x="395" y="501" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gPxM-gQfM1B7R4wF8o55-10" edge="1" parent="tobe-container" source="tobe-communicate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82b366;strokeWidth=2;endArrow=block;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="tobe-offer">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="435" y="471" as="sourcePoint" />
+            <mxPoint x="355" y="521" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="key-change" parent="1" style="text;html=1;strokeColor=none;fillColor=#fff9c4;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontColor=#1a1a1a;fontStyle=1;shadow=1;" value="🔑 &lt;font style=&quot;font-size: 16px;&quot;&gt;КЛЮЧЕВОЕ ИЗМЕНЕНИЕ:&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;Системный подход позволяет превратить хаотичный процесс «смотрю-пытаюсь-отправляю»&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;в управляемый процесс с чёткими артефактами и обратной связью.&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="980" x="120" y="800" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
